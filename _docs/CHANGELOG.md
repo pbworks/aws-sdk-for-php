@@ -1,6 +1,254 @@
+# Changelog: 1.3.3 "Moogle"
+
+Launched Tuesday, May 10, 2011
+
+## Bug fixes and enhancements
+* [Bug in AmazonCloudFront::get_private_object_url](https://forums.aws.amazon.com/thread.jspa?threadID=64004)
+* [SDK 1.3.2 - Call to undefined function json_last_error()](https://forums.aws.amazon.com/thread.jspa?threadID=64767)
+* [CURLOPT_FOLLOWLOCATION cannot be activated when in safe_mode or an open_basedir](https://forums.aws.amazon.com/thread.jspa?threadID=61333)
+
+
+## Service Classes
+### AmazonCloudFront
+* **Fixed:** Resolved an issue where the expires value for `get_private_object_url()` only accepted a string instead of a string or integer.
+
+### AmazonCloudWatch
+* **New:** Support for CloudWatch custom user metrics has been added to the SDK.
+
+
+## Extensions
+### S3BrowserUpload
+* **New:** Added the `S3BrowserUpload` class to the SDK. This class assists in generating the correct HTML/XHTML markup for uploading files to S3 via an HTML <form> element.
+
+
+## Utility Classes
+### CFArray
+* **New:** Added the `init()` method which simplifies the process of instantiating and chaining a class.
+
+### CFHadoopBase
+* **New:** The `CFHadoopBase` class has been extracted out of `CFHadoopStep` as a shared library.
+
+### CFHadoopStep
+* **New:** The `CFHadoopBase` class has been extracted out of `CFHadoopStep` as a shared library.
+* **New:** This class now extends from the `CFHadoopBase` class.
+
+### CFJSON
+* **Fixed:** Resolved an issue where a PHP 5.3-specific function was being used.
+
+### CFPolicy
+* **New:** Added the init() method which simplifies the process of instantiating and chaining a class.
+
+### CFSimpleXML
+* **New:** Added the init() method which simplifies the process of instantiating and chaining a class.
+
+### RequestCore
+* **Fixed:** Improvements to running in PHP environments with open_basedir enabled.
+* **Fixed:** RequestCore now uses an up-to-date `cacert.pem` file from Mozilla instead of the Certificate Authority that libcurl or libopenssl was compiled with, which should resolve certain issues with making SSL connections to AWS services.
+
+
+----
+
+# Changelog: 1.3.2 "Luna"
+
+Launched Tuesday, April 5, 2011
+
+## New Features & Highlights (Summary)
+* Support for Dedicated Instances within a Virtual Private Cloud on single-tenant hardware has been added to the SDK.
+* Bug fixes and enhancements:
+	* [AmazonCloudWatch get_metric_statistics returns gzipped body](https://forums.aws.amazon.com/thread.jspa?threadID=62625)
+
+
+## Service Classes
+### AmazonCloudWatch
+* **Fixed:** Worked around an issue where when CloudWatch sends back `Content-Encoding: gzip`, it really means `deflate`. When CloudWatch sends back `Content-Encoding: deflate`, it really means the data isn't encoded at all.
+
+### AmazonEC2
+* **New:** Support for Dedicated Instances within a Virtual Private Cloud on single-tenant hardware has been added to the SDK.
+
+
+----
+
+# Changelog: 1.3.1 "Kraken"
+
+Launched Friday, March 25, 2011
+
+## New Features & Highlights (Summary)
+* Fixed issues with Signature v3 authentication (SES).
+* Added gzip decoding.
+* Added support for converting data to more alternate formats.
+* Bug fixes and enhancements:
+	* [Cannot send email](https://forums.aws.amazon.com/thread.jspa?threadID=62833)
+	* [AmazonCloudWatch get_metric_statistics returns gzipped body](https://forums.aws.amazon.com/thread.jspa?threadID=62625)
+
+
+## Utility Classes
+### CFArray
+* **New:** The `to_json()` and `to_yaml()` methoda have been added to the class.
+
+### CFGzipDecode
+* **New:** Handles a variety of primary and edge cases around gzip/deflate decoding in PHP.
+
+### CFRuntime
+* **New:** Gzip decoding has been added to the SDK.
+* **Fixed:** The previous release contained a regression in the Signature v3 support that affected AmazonSES. This has been resolved.
+* **Fixed:** Completed support for Signature v3 over HTTP connections.
+
+### CFSimpleXML
+* **New:** The `to_stdClass()` and `to_yaml()` methoda have been added to the class.
+
+
+----
+
+# Changelog: 1.3 "Jecht"
+
+Launched Tuesday, March 15, 2011
+
+## New Features & Highlights (Summary)
+* Support for VPC Internet Access has been added to the SDK.
+* Bug fixes and enhancements:
+	* [AmazonEC2::register_image issue](https://forums.aws.amazon.com/thread.jspa?threadID=52499)
+	* [Automatic Parseing of XML objects](https://forums.aws.amazon.com/thread.jspa?threadID=61882)
+
+## Service Classes
+### AmazonEC2
+* **New:** Support for VPC Internet Access has been added to the SDK.
+* **Fixed:** The `$image_location` parameter in the `register_image()` method is no longer required. This is a backwards-incompatible change.
+
+### AmazonS3
+* **Fixed:** Resolved an issue in <code>get_object()</code> where using the `lastmodified` and `etag` parameters required both to be set before taking effect. They can now be set independently from each other.
+
+
+## Utility classes
+### CFArray
+* **Changed:** The `reduce()` method has been renamed to `filter()`. `reduce()` is now simply an alias for `filter()`.
+
+### CFJSON
+* **New:** Simplifies the task of normalizing XML and JSON responses as `CFSimpleXML` objects.
+
+### CFRuntime
+* **New:** Preliminary support for Signature v3 over HTTP has been added to the SDK. This is useful for debugging Signature v3 issues over non-HTTPS connections.
+* **Changed:** Classes that use the shared authentication method (i.e., NOT `AmazonS3` or `AmazonCloudFront`) will automatically convert JSON service responses into a `CFSimpleXML` object.
+* **Changed:** Formerly, the SDK would attempt to sniff the content to determine the type. Now, the SDK will check the HTTP response headers for `text/xml`, `application/xml` or `application/json` to determine whether or not to parse the content. If the HTTP response headers are not available, the SDK will still attempt content sniffing.
+
+### CFSimpleXML
+* **New:** The `to_json()` method has been added to the class.
+
+### CFUtilities
+* **New:** The `is_json()` method has been added to the class.
+
+
+----
+
+# Changelog: 1.2.6 "Ifrit"
+
+Launched Wednesday, March 2, 2011
+
+## New Features & Highlights (Summary)
+* **New:** Support for the new Asia Pacific "Northeast" (Japan) endpoint has been added for all relevant services.
+* **New:** Support for registering callback functions for read/write streams has been added to the SDK. Includes a runnable sample.
+* **Fixed:** Improvements to avoid triggering warnings when PHP is in Safe Mode.
+
+
+## Service Classes
+### AmazonAS
+* **New:** Added a new _class_ constant: `REGION_APAC_NE1`.
+
+### AmazonCloudFormation
+* **New:** Added a new _class_ constant: `REGION_APAC_NE1`.
+
+### AmazonCloudWatch
+* **New:** Added a new _class_ constant: `REGION_APAC_NE1`.
+
+### AmazonEC2
+* **New:** Added a new _class_ constant: `REGION_APAC_NE1`.
+
+### AmazonELB
+* **New:** Added a new _class_ constant: `REGION_APAC_NE1`.
+
+### AmazonRDS
+* **New:** Added a new _class_ constant: `REGION_APAC_NE1`.
+
+### AmazonS3
+* **New:** Added a new _class_ constant: `REGION_APAC_NE1`.
+* **New:** Added support for `ap-northeast-1` as a location constraint when creating a new bucket.
+
+### AmazonSDB
+* **New:** Added a new _class_ constant: `REGION_APAC_NE1`.
+
+### AmazonSNS
+* **New:** Added a new _class_ constant: `REGION_APAC_NE1`.
+
+### AmazonSQS
+* **New:** Added a new _class_ constant: `REGION_APAC_NE1`.
+
+## Utility classes
+### CFRuntime
+* **New:** Support for registering callback functions for read/write streams has been added to the SDK.
+* **New:** Future-proofed for future regional endpoints.
+
+### RequestCore
+* **New:** Support for registering callback functions for read/write streams has been added to the SDK.
+* **Fixed:** Improvements to avoid triggering warnings when PHP is in Safe Mode.
+
+## Samples
+* **New:** A sample demonstrating how to add a command-line progress bar for S3 transfers has been added to the SDK.
+
+
+----
+
+# Changelog: 1.2.5 "Heidegger"
+
+Launched Thursday, February 24, 2011
+
+## New Features & Highlights (Summary)
+* Support for AWS CloudFormation has been added to the SDK.
+* Bug fixes and enhancements:
+	* [PHP API change_content_type() broken](https://forums.aws.amazon.com/thread.jspa?threadID=59532)
+	* [Bug setting OriginAccessIdentity for a Cloudfront distribution config](https://forums.aws.amazon.com/thread.jspa?threadID=60989)
+
+## Service Classes
+### AmazonCloudFormation
+* **New:** Support for AWS CloudFormation has been added to the SDK.
+
+### AmazonCloudFront
+* **Fixed:** Issues around `update_xml_config()` have been resolved.
+
+### AmazonS3
+* **Fixed:** Issues around `change_content_type()` have been resolved.
+
+
+----
+
+# Changelog: 1.2.4 "Goltanna"
+
+Launched Wednesday, February 16, 2011
+
+## New Features & Highlights (Summary)
+* Support for IAM account aliases and server certificates has been added to the SDK.
+* Support for Amazon S3 Website Configuration has been added to the SDK.
+* Documentation updates for Amazon RDS and AWS Import/Export.
+* Updated all documentation blocks to adhere to the PHPDoc format. This enables a greater number of tools to take advantage of the SDK documentation.
+* Rolled out a major update to the SDK API Reference.
+
+## Service Classes
+### AmazonIAM
+* **New:** Support for IAM account aliases and server certificates has been added to the SDK.
+
+### AmazonImportExport
+* **New:** Documentation has been updated to note the new US West region support.
+
+### AmazonRDS
+* **New:** Documentation has been updated to note the new support for MySQL 5.5.
+
+### AmazonS3
+* **New:** Support for Amazon S3 Website Configuration has been added to the SDK.
+
+
+----
+
 # Changelog: 1.2.3 "Fayth"
 
-Launched Monday, January 24, 2011
+Launched Tuesday, January 25, 2010
 
 ## New Features & Highlights (Summary)
 * Support for Amazon Simple Email Service has been added to the SDK.
